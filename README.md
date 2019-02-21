@@ -8,10 +8,10 @@
 3) run `rails s`
 
 Routes-
-users - to view all users
-user/register - to register user
-user/send_otp - to send otp
-user/login - to login user
+1) users - to view all users
+2) user/register - to register user
+3) user/send_otp - to send otp
+4) user/login - to login user
 
 # Issues
 
