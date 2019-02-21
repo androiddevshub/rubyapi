@@ -38,7 +38,6 @@ class UsersController < ApplicationController
   end
 
   def send_otp
-    # byebug
     @identification = params[:identification]
     if num_valid?(@identification)
       if contact_valid?(@identification)
@@ -84,7 +83,6 @@ class UsersController < ApplicationController
   def handle_otp(options)
     @otp = rand.to_s[2..6]
     if num_valid?(@identification)
-      # User.update(contact: options[:contact], otp: @otp)
       User.where(contact: options[:contact]).update(otp: @otp)
       render json: {message: "An OTP has been sent to your contact :  #{@otp}"}, status: :created
     else
