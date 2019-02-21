@@ -5,5 +5,7 @@ Rails.application.routes.draw do
   post 'user/register', to: 'users#register'
   post 'user/send_otp', to: 'users#send_otp'
   post 'user/login', to: 'users#login'
+  post 'user/forgot_password', to: 'users#forgot_password'
+  post 'user/reset_password', to: 'users#reset_password'
 
 end
