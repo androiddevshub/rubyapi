@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_request, except: %i[register login send_otp index]
+
   # GET /index
   def index
     @users = User.all
@@ -59,6 +59,37 @@ class UsersController < ApplicationController
       else
         render json: {message: "Email invalid"}, status: :created
       end
+    end
+  end
+
+  def forgot_password
+    @identification = params[:identification]
+    if email_valid?(@identification)
+      if User.exists?(email: @identification)
+        @random_token = SecureRandom.urlsafe_base64(nil, false)
+        User.where(email: @identification).update(forgot_password_token: @random_token)
+        render json: {message: "Forgot password mail sent"}, status: :created
+      else
+        render json: {message: "Email does not exists"}, status: :created
+      end
+    else
+      render json: {message: "Email invalid"}, status: :created
+    end
+  end
+
+  def reset_password
+    @password = params[:password]
+    @confirm_assword = params[:confirm_password]
+    @token = params[:token]
+    if User.exists?(forgot_password_token: @token)
+      if @password == @confirm_assword
+        User.where(forgot_password_token: @token).update(password_digest: @password)
+        render json: {message: "Passwords changed successfully"}, status: :created
+      else
+        render json: {message: "Passwords do not match"}, status: :created
+      end
+    else
+      render json: {message: "Invalid token"}, status: :created
     end
   end
 
